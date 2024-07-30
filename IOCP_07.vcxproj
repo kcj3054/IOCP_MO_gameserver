@@ -93,12 +93,11 @@
     <ClInclude Include="IOCPServer.h" />
     <ClInclude Include="Packet.h" />
     <ClInclude Include="PacketSession.h" />
-    <ClInclude Include="Session.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="BaseHandler.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="PacketSession.cpp" />
-    <ClCompile Include="Session.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

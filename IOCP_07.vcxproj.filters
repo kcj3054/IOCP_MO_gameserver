@@ -3,7 +3,9 @@
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="PacketSession.cpp" />
-    <ClCompile Include="Session.cpp" />
+    <ClCompile Include="BaseHandler.cpp">
+      <Filter>Handler</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="IOCPServer.h">
@@ -19,11 +21,13 @@
     </ClInclude>
     <ClInclude Include="CoreMacro.h" />
     <ClInclude Include="PacketSession.h" />
-    <ClInclude Include="Session.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="ServerNetwork">
       <UniqueIdentifier>{1fc0f584-76ea-4096-9ebc-805fceb35389}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Handler">
+      <UniqueIdentifier>{e26c58e8-05d5-4418-a0e4-601faf2d6320}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -21,7 +21,6 @@ public:
 		mIOCPHandle = iocpHandle_;
 	}
 
-	// nullptr로 죽는다 
 	UINT32 GetIndex() { return mIndex; }
 
 	bool IsConnectd() { return isConnected; }
@@ -116,8 +115,6 @@ public:
 
 	bool AcceptCompletion()
 	{
-		printf_s("AcceptCompletion : SessionIndex(%d)\n", mIndex);
-
 		if (OnConnect(mIOCPHandle, socket) == false)
 		{
 			return false;
@@ -162,7 +159,6 @@ public:
 			&(mRecvOverlappedEx.m_wsaBuf),
 			1, // 1로하면 가장 큰 값인가?.. 한번에 받을 수 있는 데이터 최대량 부분
 			// TCP 순차성때문에 가장 큰것으로 하기도함 
-
 			&dwRecvNumBytes,
 			&dwFlag,
 			(LPWSAOVERLAPPED) & (mRecvOverlappedEx),

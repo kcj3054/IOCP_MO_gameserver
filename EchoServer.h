@@ -1,7 +1,11 @@
 #pragma once
 
+
+
 #include "IOCPServer.h"
 #include "Packet.h"
+
+#include <concurrent_queue.h>
 
 #include <vector>
 #include <deque>
@@ -36,9 +40,15 @@ public:
 		PacketData packet;
 		packet.Set(clientIndex_, size_, pData_);
 
-		std::lock_guard<std::mutex> guard(mLock);
-		mPacketDataQueue.push_back(packet);
+		mPacketDataQueue.push(packet); // ConcurrentQueue를 사용하여 lock부분 제거 
+
+		// std::lock_guard<std::mutex> guard(mLock);
+		// mPacketDataQueue.push_back(packet);
 	}
+
+	/*
+	* Packet처리용 스레드와 IO 담당 스레드들을 분리.
+	*/
 
 	void Run(const UINT32 maxClient)
 	{
@@ -77,7 +87,21 @@ private:
 		}
 	}
 
+	//concurrentqueue 사용 
 	PacketData DequePacketData()
+	{
+		PacketData packetData;
+		if (mPacketDataQueue.try_pop(packetData))
+		{
+			return packetData;
+		}
+		else
+		{
+			return PacketData();
+		}
+	}
+
+	/*PacketData DequePacketData()
 	{
 		PacketData packetData;
 
@@ -93,7 +117,7 @@ private:
 		mPacketDataQueue.pop_front();
 
 		return packetData;
-	}
+	}*/
 
 private:
 
@@ -102,5 +126,7 @@ private:
 	std::thread mProcessThread;
 
 	std::mutex mLock;
-	std::deque<PacketData> mPacketDataQueue;
+	
+	// std::deque<PacketData> mPacketDataQueue;
+	concurrency::concurrent_queue<PacketData> mPacketDataQueue;
 };

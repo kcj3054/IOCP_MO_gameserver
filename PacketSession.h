@@ -1,8 +1,7 @@
 #pragma once
 
-#include "Session.h"
 
-class PacketSession : public Session
+class PacketSession 
 {
 public:
 	PacketSession() = default;

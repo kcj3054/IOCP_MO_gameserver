@@ -296,7 +296,9 @@ private:
 				// Accept는 Worker말고 AcceptThread에서 담당해서 처리하는 것으로 빼자 
 				// 
 			case IOOperation::ACCEPT:
+				
 				pClientInfo = GetClientInfo(overlappedEx->SessionIndex);
+
 				if (pClientInfo->AcceptCompletion())
 				{
 					InterlockedIncrement(&clientCount);
