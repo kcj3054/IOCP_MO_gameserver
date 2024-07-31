@@ -1,23 +1,20 @@
 #include "PacketSession.h"
 
-int PacketSession::OnRecv(unsigned char* buffer, int len)
+void PacketSession::RegisteHandler(int packetID, PacketHandler handler)
 {
-	int processLen = 0;
+	_handlers[packetID] = handler;
+}
 
-	while (true)
-	{
-		int dataSize = len - processLen;
-
-		//header size 4
-		if (dataSize < 4)
-		{
-			break;
-		}
-
-		// OnRecvPacket(&buffer[processLen],)
-
-		// processLen += header.size();
-	}
-
-	return processLen;
+int PacketSession::OnRecvPacket(char* buffer, int len)
+{
+    int32_t packetId = 0 /* 패킷 ID 추출 로직 */;
+    auto iter = _handlers.find(packetId);
+    if (iter != _handlers.end())
+    {
+        iter->second(shared_from_this(), buffer, len);
+    }
+    else
+    {
+        // 기본 처리 로직
+    }
 }

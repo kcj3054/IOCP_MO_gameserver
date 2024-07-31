@@ -1,14 +1,28 @@
 #pragma once
 
+#include <unordered_map>
+#include <functional>
+#include <memory>
 
-class PacketSession 
+/*
+* ===================================================================
+*				패킷 수신과 관련된 로직을 담당
+* ===================================================================
+*/
+
+class PacketSession : public std::enable_shared_from_this<PacketSession>
 {
 public:
 	PacketSession() = default;
 	virtual ~PacketSession() = default;
 
+public:
+	using PacketHandler = std::function<void(std::shared_ptr<PacketSession>, char*, int)>;
+
+	void RegisteHandler(int packetID, PacketHandler handler);
+
 protected:
-	virtual int OnRecv(unsigned char* buffer, int len) sealed;
-	virtual int OnRecvPacket(unsigned char* buffer, int len) abstract;
+	std::unordered_map<int, PacketHandler> _handlers;
+	virtual int OnRecvPacket(char* buffer, int len);
 };
 

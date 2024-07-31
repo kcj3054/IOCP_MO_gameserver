@@ -98,6 +98,7 @@
     <ClCompile Include="BaseHandler.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="PacketSession.cpp" />
+    <ClCompile Include="PacketType.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

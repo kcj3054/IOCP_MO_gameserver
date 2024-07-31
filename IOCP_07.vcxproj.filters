@@ -6,6 +6,9 @@
     <ClCompile Include="BaseHandler.cpp">
       <Filter>Handler</Filter>
     </ClCompile>
+    <ClCompile Include="PacketType.h">
+      <Filter>Packet</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="IOCPServer.h">
@@ -28,6 +31,9 @@
     </Filter>
     <Filter Include="Handler">
       <UniqueIdentifier>{e26c58e8-05d5-4418-a0e4-601faf2d6320}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Packet">
+      <UniqueIdentifier>{8e631414-b527-4522-94c2-af06f9dbc68a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
