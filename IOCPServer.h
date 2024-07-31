@@ -139,7 +139,7 @@ public:
 		}
 		
 		//Accepter 쓰레드를 종요한다.
-		mIsAccepterRun = false;
+		isAccepterRun = false;
 		closesocket(mListenSocket);
 		
 		if (mAccepterThread.joinable())
@@ -347,7 +347,7 @@ private:
 	//사용자의 접속을 받는 쓰레드
 	void AccepterThread()
 	{
-		while (mIsAccepterRun)
+		while (isAccepterRun)
 		{
 			for (auto client : mClientInfos)
 			{
@@ -400,5 +400,5 @@ private:
 	bool		mIsWorkerRun = true;
 
 	//접속 쓰레드 동작 플래그
-	bool		mIsAccepterRun = true;
+	bool		isAccepterRun = true;
 };

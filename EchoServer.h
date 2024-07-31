@@ -4,9 +4,12 @@
 
 #include "IOCPServer.h"
 #include "Packet.h"
+#include "packetType.h"
 
 #include <concurrent_queue.h>
 
+#include <functional>
+#include <unordered_map>
 #include <vector>
 #include <deque>
 #include <thread>
@@ -19,6 +22,12 @@ public:
 	EchoServer() = default;
 	virtual ~EchoServer() = default;
 	
+	void RegisterPackets()
+	{
+		/*mPacketHandlers[PACKET_TYPE_LOGIN] = [this](const PacketData& packet) { HandleLogin(packet); };
+		mPacketHandlers[PACKET_TYPE_LOGOUT] = [this](const PacketData& packet) { HandleLogout(packet); };
+		mPacketHandlers[PACKET_TYPE_MESSAGE] = [this](const PacketData& packet) { HandleMessage(packet); };*/
+	}
 
 	virtual void OnConnect(const UINT32 clientIndex_) final
 	{
@@ -129,4 +138,6 @@ private:
 	
 	// std::deque<PacketData> mPacketDataQueue;
 	concurrency::concurrent_queue<PacketData> mPacketDataQueue;
+
+	std::unordered_map<int, std::function<void(const PacketData&)>> mPacketHandlers;
 };

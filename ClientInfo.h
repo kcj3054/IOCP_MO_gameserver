@@ -115,6 +115,9 @@ public:
 
 	bool AcceptCompletion()
 	{
+		/*
+		* CreateIOCompletionPort 부분과 socket 연결 
+		*/
 		if (OnConnect(mIOCPHandle, socket) == false)
 		{
 			return false;
