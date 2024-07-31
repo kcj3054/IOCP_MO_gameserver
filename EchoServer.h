@@ -39,9 +39,8 @@ public:
 		printf("[OnClose] 클라이언트: Index(%d)\n", clientIndex_);
 	}
 	
-	//문제가 있음 패킷은 단위 단위로 오지 않음.. 
-	
-	//
+	//문제가 있음 패킷은 단위 단위로 오지 않음..
+	//IOCPServer.h 부분에  Packet을 분할하는 부분을 추가할 예정  
 	virtual void OnReceive(const UINT32 clientIndex_, const UINT32 size_, char* pData_) final
 	{
 		printf("[OnReceive] 클라이언트: Index(%d), dataSize(%d)\n", clientIndex_, size_);
