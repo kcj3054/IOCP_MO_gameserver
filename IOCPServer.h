@@ -42,7 +42,7 @@ public:
 		//연결지향형 TCP , Overlapped I/O 소켓을 생성
 		mListenSocket = WSASocket(AF_INET, SOCK_STREAM, IPPROTO_TCP, NULL, NULL, WSA_FLAG_OVERLAPPED);
 
-		if (INVALID_SOCKET == mListenSocket)
+		if (mListenSocket == INVALID_SOCKET)
 		{
 			printf("[에러] socket()함수 실패 : %d\n", WSAGetLastError());
 			return false;

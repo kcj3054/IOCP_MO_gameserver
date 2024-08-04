@@ -32,3 +32,23 @@ struct PacketData
 		delete pPacketData;
 	}
 };
+
+struct PacketInfo
+{
+	int cliendtIndex = 0;
+	int packetID = 0;
+	int dataszie = 0;
+
+	char* packet;
+};
+
+enum class PacketID
+{
+	// CLIENT
+	LOGIN_REQUEST = 101,
+	LOGIN_REQUEST = 102
+
+	// DB
+
+	// SERVER
+};

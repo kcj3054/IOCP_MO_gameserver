@@ -5,6 +5,8 @@
 #include "IOCPServer.h"
 #include "Packet.h"
 #include "packetType.h"
+#include "PacketSession.h"
+#include "PaketManager.h"
 
 #include <concurrent_queue.h>
 
@@ -48,10 +50,13 @@ public:
 		PacketData packet;
 		packet.Set(clientIndex_, size_, pData_);
 
-		mPacketDataQueue.push(packet); // ConcurrentQueue를 사용하여 lock부분 제거 
 
-		// std::lock_guard<std::mutex> guard(mLock);
-		// mPacketDataQueue.push_back(packet);
+		// ConcurrentQueue를 사용하여 lock부분 제거 
+		mPacketDataQueue.push(packet); 
+
+		// todo 생각을 해보자.. 굳이 OnRecv한 뒤 -> PacketManger -> 다시 할 이유가 있을까 ? 나중에 다시 정리 하기
+		//PacketManger 영역 단 
+		packetManger->ReceivePacketData(clientIndex_, size_, pData_);
 	}
 
 	/*
@@ -94,8 +99,6 @@ private:
 			}
 		}
 	}
-
-	//concurrentqueue 사용 
 	PacketData DequePacketData()
 	{
 		PacketData packetData;
@@ -109,24 +112,6 @@ private:
 		}
 	}
 
-	/*PacketData DequePacketData()
-	{
-		PacketData packetData;
-
-		std::lock_guard<std::mutex> guard(mLock);
-		if (mPacketDataQueue.empty())
-		{
-			return PacketData();
-		}
-
-		packetData.Set(mPacketDataQueue.front());
-
-		mPacketDataQueue.front().Release();
-		mPacketDataQueue.pop_front();
-
-		return packetData;
-	}*/
-
 private:
 
 	bool mIsRunProcessThread = false;
@@ -134,9 +119,11 @@ private:
 	std::thread mProcessThread;
 
 	std::mutex mLock;
-	
-	// std::deque<PacketData> mPacketDataQueue;
 	concurrency::concurrent_queue<PacketData> mPacketDataQueue;
 
+	//삭제 
 	std::unordered_map<int, std::function<void(const PacketData&)>> mPacketHandlers;
+
+private:
+	std::unique_ptr<PaketManager> packetManger = std::make_unique<PaketManager>();
 };

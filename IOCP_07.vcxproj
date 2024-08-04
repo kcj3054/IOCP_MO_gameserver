@@ -46,6 +46,8 @@
     <IntDir>obj\Win64\Debug\</IntDir>
     <TargetName>IOCP_07</TargetName>
     <TargetExt>.exe</TargetExt>
+    <IncludePath>C:\iocp_tutorial\edu_cpp_IOCP\Tutorial\ThirdParty\hiredis;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\iocp_tutorial\edu_cpp_IOCP\Tutorial\ThirdParty\Debug;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release Win64|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -62,10 +64,13 @@
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <LanguageStandard>stdcpp20</LanguageStandard>
+      <AdditionalIncludeDirectories>C:\iocp_tutorial\edu_cpp_IOCP\Tutorial\ThirdParty\hiredis;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>C:\iocp_tutorial\edu_cpp_IOCP\Tutorial\ThirdParty\Debug\hiredisd.lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>C:\iocp_tutorial\edu_cpp_IOCP\Tutorial\ThirdParty\Debug\hiredisd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release Win64|x64'">
@@ -95,7 +100,6 @@
     <ClInclude Include="PacketSession.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="BaseHandler.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="PacketSession.cpp" />
     <ClCompile Include="PacketType.h" />

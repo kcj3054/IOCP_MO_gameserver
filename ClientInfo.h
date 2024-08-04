@@ -177,6 +177,9 @@ public:
 		return true;
 	}
 
+	/*
+	* 해당 부분 수정할 예정 
+	*/
 	// 1개의 스레드에서만 호출해야 한다!
 	bool SendMsg(const UINT32 dataSize_, char* pMsg_)
 	{	
@@ -234,8 +237,6 @@ private:
 		//socket_error이면 client socket이 끊어진걸로 처리한다.
 		if (nRet == SOCKET_ERROR && (WSAGetLastError() != ERROR_IO_PENDING))
 		{
-
-
 			// printf("[에러] WSASend()함수 실패 : %d\n", WSAGetLastError());
 			return false;
 		}
