@@ -18,11 +18,11 @@
 #include <mutex>
 
 
-class EchoServer : public IOCPServer
+class GameServer : public IOCPServer
 {
 public:
-	EchoServer() = default;
-	virtual ~EchoServer() = default;
+	GameServer() = default;
+	virtual ~GameServer() = default;
 	
 	void RegisterPackets()
 	{
