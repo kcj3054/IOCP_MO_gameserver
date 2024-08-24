@@ -18,7 +18,7 @@ public:
 	void Init(const UINT32 index, HANDLE iocpHandle_)
 	{
 		ZeroMemory(&mRecvOverlappedEx, sizeof(OverlappedEX));
-		ZeroMemory(mRecvBuf, sizeof(mRecvBuf));  // mRecvBuf를 초기화하여 문제가 발생하지 않도록 함
+		//ZeroMemory(mRecvBuf, sizeof(mRecvBuf));  // mRecvBuf를 초기화하여 문제가 발생하지 않도록 함
 
 		mIndex = index;
 		mIOCPHandle = iocpHandle_;
@@ -83,10 +83,24 @@ public:
 	{
 
 		printf_s("PostAccept. client Index: %d\n", GetIndex());
+
+		// mLatestClosedTimeSec  해당 구문 없으면 session 엉킨다 
+		mLatestClosedTimeSec = UINT32_MAX;
+
 		_socket = WSASocket(AF_INET, SOCK_STREAM, IPPROTO_IP,
 			NULL, 0, WSA_FLAG_OVERLAPPED);
 		if (_socket == INVALID_SOCKET)
 		{
+			return false;
+		}
+
+		//socket 재 사용 옵션 추가 
+		int optval = 1;
+		if (setsockopt(_socket, SOL_SOCKET, SO_REUSEADDR, (const char*)&optval, sizeof(optval)) == SOCKET_ERROR)
+		{
+			std::cout << "setsockopt(SO_REUSEADDR) 실패: " << WSAGetLastError() << std::endl;
+			closesocket(_socket);
+			_socket = INVALID_SOCKET;
 			return false;
 		}
 
@@ -99,6 +113,9 @@ public:
 		mAcceptContext.m_eOperation = IOOperation::ACCEPT;
 		mAcceptContext.SessionIndex = mIndex;
 
+		/*
+		* WSAAccept 대신 AcceptEx를 사용하여 동기 -> 비동기로 전환 
+		*/
 		/*
 		* AcceptEx는 생성한 Socket을 매개변수에 전달해줘야한다
 		*/
@@ -157,14 +174,17 @@ public:
 			std::cout << "BIND RECV ERROR: mRecvBuf is null." << std::endl;
 			return false;
 		}
-		
-		// mRecvBuf를 명시적으로 초기화
-		ZeroMemory(mRecvBuf, sizeof(mRecvBuf));
-		
+				
 		//Overlapped I/O을 위해 각 정보를 셋팅해 준다.
 		mRecvOverlappedEx.m_wsaBuf.len = MAX_SOCK_RECVBUF;
 		mRecvOverlappedEx.m_wsaBuf.buf = mRecvBuf;
 		mRecvOverlappedEx.m_eOperation = IOOperation::RECV;
+
+		if (_socket == INVALID_SOCKET)
+		{
+			std::cout << "WSARecv시 invalid_socket 사용" << std::endl;
+			return false;
+		}
 
 		//WSARecv Error 발생 
 		int nRet = WSARecv(_socket,
@@ -175,6 +195,20 @@ public:
 			&dwFlag,
 			(LPWSAOVERLAPPED) & (mRecvOverlappedEx),
 			NULL);
+
+		if (nRet != SOCKET_ERROR && dwRecvNumBytes > 0)
+		{
+			// 수신된 데이터의 유효성을 확인
+			if (dwRecvNumBytes <= sizeof(mRecvBuf))
+			{
+				// 유효한 데이터 처리
+			}
+			else
+			{
+				std::cout << "Received data exceeds buffer size." << std::endl;
+				return false;
+			}
+		}
 
 		//socket_error이면 client socket이 끊어진걸로 처리한다., SOCKET_ERROR -> -1
 		if (nRet == SOCKET_ERROR && (WSAGetLastError() != ERROR_IO_PENDING))
@@ -253,25 +287,6 @@ private:
 		return true;
 	}
 
-	bool SetSocketOption()
-	{
-		int opt = 1;
-		if (SOCKET_ERROR == setsockopt(_socket, IPPROTO_TCP, TCP_NODELAY, (const char*)&opt, sizeof(int)))
-		{
-			printf_s("[DEBUG] TCP_NODELAY error: %d\n", GetLastError());
-			return false;
-		}
-
-		opt = 0;
-		if (SOCKET_ERROR == setsockopt(_socket, SOL_SOCKET, SO_RCVBUF, (const char*)&opt, sizeof(int)))
-		{
-			printf_s("[DEBUG] SO_RCVBUF change error: %d\n", GetLastError());
-			return false;
-		}
-
-		return true;
-	}
-
 
 private:
 
@@ -279,7 +294,7 @@ private:
 	HANDLE mIOCPHandle = INVALID_HANDLE_VALUE;
 
 	UINT64 mLatestClosedTimeSec = 0;
-	bool isConnected = 0;
+	bool isConnected = false;
 
 	SOCKET			_socket = INVALID_SOCKET;			//Cliet와 연결되는 소켓
 

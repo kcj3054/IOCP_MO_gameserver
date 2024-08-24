@@ -100,10 +100,15 @@ public:
 		
 		//CreateAccepterThread, CreateWokerThread 순서 바꿈으로써 터트리기.. 
 
-		CreateAccepterThread();
-
 		//접속된 클라이언트 주소 정보를 저장할 구조체
-		CreateWokerThread();
+		bool result = CreateWokerThread();
+
+		if (result = false)
+		{
+			return false;
+		}
+
+		CreateAccepterThread();
 		return true;
 	}
 
@@ -159,7 +164,7 @@ private:
 	}
 
 	//WaitingThread Queue에서 대기할 쓰레드들을 생성
-	void CreateWokerThread()
+	bool CreateWokerThread()
 	{
 		unsigned int uiThreadId = 0;
 		//WaingThread Queue에 대기 상태로 넣을 쓰레드들 생성 권장되는 개수 : (cpu개수 * 2) + 1 
@@ -172,6 +177,7 @@ private:
 		}
 
 		printf("WokerThread 시작..\n");
+		return true;
 	}
 	
 	//사용하지 않는 클라이언트 정보 구조체를 반환한다.
@@ -335,6 +341,8 @@ private:
 	{
 		while (isAccepterRun)
 		{
+			auto curTimeSec = std::chrono::duration_cast<std::chrono::seconds>(std::chrono::steady_clock::now().time_since_epoch()).count();
+
 			for (auto client : mClientInfos)
 			{
 				if (client->IsConnectd())
@@ -342,10 +350,23 @@ private:
 					continue;
 				}
 
+
+				if ((UINT64)curTimeSec < client->GetLatestClosedTimeSec())
+				{
+					continue;
+				}
+
+				auto diff = curTimeSec - client->GetLatestClosedTimeSec();
+				if (diff <= RE_USE_SESSION_WAIT_TIMESEC)
+				{
+					continue;
+				}
+
 				client->PostAccept(mListenSocket);
+				//std::this_thread::sleep_for(std::chrono::milliseconds(32));
 			}
 			
-			std::this_thread::sleep_for(std::chrono::milliseconds(32));
+			std::this_thread::sleep_for(std::chrono::milliseconds(50));
 		}
 	}
 
