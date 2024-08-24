@@ -24,15 +24,30 @@ public:
 		mIOCPHandle = iocpHandle_;
 	}
 
-	UINT32 GetIndex() { return mIndex; }
+	UINT32 GetIndex() 
+	{
+		return mIndex; 
+	}
 
-	bool IsConnectd() { return isConnected; }
+	bool IsConnectd() 
+	{ 
+		return isConnected; 
+	}
 	
-	SOCKET GetSock() { return _socket; }
+	SOCKET GetSock() 
+	{ 
+		return _socket; 
+	}
 
-	// UINT64 GetLatestClosedTimeSec() { return mLatestClosedTimeSec; }
+	UINT64 GetLatestClosedTimeSec() 
+	{ 
+		return mLatestClosedTimeSec; 
+	}
 
-	char* RecvBuffer() { return mRecvBuf; }
+	char* RecvBuffer() 
+	{ 
+		return mRecvBuf; 
+	}
 
 
 	bool OnConnect(HANDLE iocpHandle_, SOCKET socket)
@@ -43,6 +58,7 @@ public:
 		//I/O Completion Port객체와 소켓을 연결시킨다.
 		if (BindIOCompletionPort(iocpHandle_) == false)
 		{
+			std::cout << "BindIOCompletionPort false" << std::endl;
 			return false;
 		}
 
@@ -65,6 +81,8 @@ public:
 
 	bool PostAccept(SOCKET listenSock_)
 	{
+
+		printf_s("PostAccept. client Index: %d\n", GetIndex());
 		_socket = WSASocket(AF_INET, SOCK_STREAM, IPPROTO_IP,
 			NULL, 0, WSA_FLAG_OVERLAPPED);
 		if (_socket == INVALID_SOCKET)
@@ -115,6 +133,7 @@ public:
 
 		if (hIOCP == INVALID_HANDLE_VALUE)
 		{
+			printf("[에러] CreateIoCompletionPort()함수 실패: %d\n", GetLastError());
 			return false;
 		}
 		return true;
@@ -131,11 +150,23 @@ public:
 		DWORD dwFlag = 0;
 		DWORD dwRecvNumBytes = 0;
 
+		///mRecvBuf가 문제가 있는 상황에서 mRecvOverlappedEx.m_wsaBuf.buf = mRecvBuf;를 행하면 문제가 발생 함  
+		// mRecvBuf가 유효한 메모리인지 확인
+		if (mRecvBuf == nullptr)
+		{
+			std::cout << "BIND RECV ERROR: mRecvBuf is null." << std::endl;
+			return false;
+		}
+		
+		// mRecvBuf를 명시적으로 초기화
+		ZeroMemory(mRecvBuf, sizeof(mRecvBuf));
+		
 		//Overlapped I/O을 위해 각 정보를 셋팅해 준다.
 		mRecvOverlappedEx.m_wsaBuf.len = MAX_SOCK_RECVBUF;
 		mRecvOverlappedEx.m_wsaBuf.buf = mRecvBuf;
 		mRecvOverlappedEx.m_eOperation = IOOperation::RECV;
 
+		//WSARecv Error 발생 
 		int nRet = WSARecv(_socket,
 			&(mRecvOverlappedEx.m_wsaBuf),
 			1, // 1로하면 가장 큰 값인가?.. 한번에 받을 수 있는 데이터 최대량 부분
@@ -145,7 +176,7 @@ public:
 			(LPWSAOVERLAPPED) & (mRecvOverlappedEx),
 			NULL);
 
-		//socket_error이면 client socket이 끊어진걸로 처리한다.
+		//socket_error이면 client socket이 끊어진걸로 처리한다., SOCKET_ERROR -> -1
 		if (nRet == SOCKET_ERROR && (WSAGetLastError() != ERROR_IO_PENDING))
 		{
 			//10057 Error 
@@ -247,6 +278,7 @@ private:
 	INT32 mIndex = 0;
 	HANDLE mIOCPHandle = INVALID_HANDLE_VALUE;
 
+	UINT64 mLatestClosedTimeSec = 0;
 	bool isConnected = 0;
 
 	SOCKET			_socket = INVALID_SOCKET;			//Cliet와 연결되는 소켓

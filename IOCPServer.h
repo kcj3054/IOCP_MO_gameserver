@@ -280,7 +280,7 @@ private:
 				// Accept는 Worker말고 AcceptThread에서 담당해서 처리하는 것으로 빼자 
 				// 
 			case IOOperation::ACCEPT:
-				
+				//miocphandle이 다 동일하지  ?.. 
 				pClientInfo = GetClientInfo(overlappedEx->SessionIndex);
 
 				if (pClientInfo->AcceptCompletion())
@@ -348,6 +348,7 @@ private:
 			std::this_thread::sleep_for(std::chrono::milliseconds(32));
 		}
 	}
+
 	
 	//소켓의 연결을 종료 시킨다.
 	void CloseSocket(ClientInfo* pClientInfo, bool bIsForce = false)
