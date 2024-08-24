@@ -94,15 +94,19 @@
     <ClInclude Include="ClientInfo.h" />
     <ClInclude Include="CoreMacro.h" />
     <ClInclude Include="Define.h" />
-    <ClInclude Include="EchoServer.h" />
+    <ClInclude Include="GameServer.h" />
     <ClInclude Include="IOCPServer.h" />
     <ClInclude Include="Packet.h" />
     <ClInclude Include="PacketSession.h" />
+    <ClInclude Include="PaketManager.h" />
+    <ClInclude Include="UserManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="PacketSession.cpp" />
     <ClCompile Include="PacketType.h" />
+    <ClCompile Include="PaketManager.cpp" />
+    <ClCompile Include="UserManager.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

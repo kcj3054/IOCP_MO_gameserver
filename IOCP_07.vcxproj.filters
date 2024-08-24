@@ -6,6 +6,8 @@
     <ClCompile Include="PacketType.h">
       <Filter>Packet</Filter>
     </ClCompile>
+    <ClCompile Include="PaketManager.cpp" />
+    <ClCompile Include="UserManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="IOCPServer.h">
@@ -14,13 +16,15 @@
     <ClInclude Include="Define.h">
       <Filter>ServerNetwork</Filter>
     </ClInclude>
-    <ClInclude Include="EchoServer.h" />
+    <ClInclude Include="GameServer.h" />
     <ClInclude Include="Packet.h" />
     <ClInclude Include="ClientInfo.h">
       <Filter>ServerNetwork</Filter>
     </ClInclude>
     <ClInclude Include="CoreMacro.h" />
     <ClInclude Include="PacketSession.h" />
+    <ClInclude Include="PaketManager.h" />
+    <ClInclude Include="UserManager.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="ServerNetwork">

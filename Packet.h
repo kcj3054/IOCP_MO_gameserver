@@ -46,7 +46,7 @@ enum class PacketID
 {
 	// CLIENT
 	LOGIN_REQUEST = 101,
-	LOGIN_REQUEST = 102
+	LOGIN_RESPONSE= 102
 
 	// DB
 

@@ -47,16 +47,16 @@ public:
 	{
 		printf("[OnReceive] 클라이언트: Index(%d), dataSize(%d)\n", clientIndex_, size_);
 
-		PacketData packet;
-		packet.Set(clientIndex_, size_, pData_);
+		//PacketData packet;
+		//packet.Set(clientIndex_, size_, pData_);
 
 
-		// ConcurrentQueue를 사용하여 lock부분 제거 
-		mPacketDataQueue.push(packet); 
+		//// ConcurrentQueue를 사용하여 lock부분 제거 
+		//mPacketDataQueue.push(packet); 
 
-		// todo 생각을 해보자.. 굳이 OnRecv한 뒤 -> PacketManger -> 다시 할 이유가 있을까 ? 나중에 다시 정리 하기
-		//PacketManger 영역 단 
-		packetManger->ReceivePacketData(clientIndex_, size_, pData_);
+		//// todo 생각을 해보자.. 굳이 OnRecv한 뒤 -> PacketManger -> 다시 할 이유가 있을까 ? 나중에 다시 정리 하기
+		////PacketManger 영역 단 
+		//packetManger->ReceivePacketData(clientIndex_, size_, pData_);
 	}
 
 	/*

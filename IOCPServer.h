@@ -1,4 +1,3 @@
-//출처: 강정중님의 저서 '온라인 게임서버'에서
 #pragma once
 #pragma comment(lib, "ws2_32")
 #pragma comment(lib, "mswsock.lib")
@@ -7,6 +6,8 @@
 #include "Define.h"
 #include <thread>
 #include <vector>
+#include <iostream>
+
 
 /*
 * iocp에서 풀링하는 역할드은 커널에서한다 
@@ -66,49 +67,35 @@ public:
 		stServerAddr.sin_addr.s_addr = htonl(INADDR_ANY);
 
 		//위에서 지정한 서버 주소 정보와 cIOCompletionPort 소켓을 연결한다.
-		int nRet = bind(mListenSocket, (SOCKADDR*)&stServerAddr, sizeof(SOCKADDR_IN));
-		if (0 != nRet)
+		if (bind(mListenSocket, (SOCKADDR*)&stServerAddr, sizeof(SOCKADDR_IN)) != 0)
 		{
-			printf("[에러] bind()함수 실패 : %d\n", WSAGetLastError());
 			return false;
 		}
 
 		//접속 요청을 받아들이기 위해 cIOCompletionPort소켓을 등록하고 
 		//접속대기큐를 5개로 설정 한다.
-		nRet = listen(mListenSocket, 5);
-		if (0 != nRet)
+
+		if (listen(mListenSocket, 5) != 0)
 		{
-			printf("[에러] listen()함수 실패 : %d\n", WSAGetLastError());
 			return false;
 		}
 
 		//CompletionPort객체 생성 요청을 한다.
 		mIOCPHandle = CreateIoCompletionPort(INVALID_HANDLE_VALUE, NULL, NULL, MaxIOWorkerThreadCount);
-		if (NULL == mIOCPHandle)
-		{
-			printf("[에러] CreateIoCompletionPort()함수 실패: %d\n", GetLastError());
-			return false;
-		}
 
 		// IOCP를 생성하는 부분이 아니라, IOCP에 내 SOCKET을 연동하는 부분이다. 
-		// 
 		auto iocpHandle = CreateIoCompletionPort((HANDLE)mListenSocket, mIOCPHandle, (UINT32)0, 0);
 		if (iocpHandle == nullptr)
 		{
-			printf("[에러] listen socket IOCP bind 실패 : %d\n", WSAGetLastError());
 			return false;
 		}
 
-		printf("서버 등록 성공..\n");
 		return true;
 	}
 
 	//접속 요청을 수락하고 메세지를 받아서 처리하는 함수
 	bool StartServer(const UINT32 maxClientCount)
 	{
-		/*
-		* CreatClient처럼 클라이언트를
-		*/
 		CreateClient(maxClientCount);
 		
 		//CreateAccepterThread, CreateWokerThread 순서 바꿈으로써 터트리기.. 
@@ -117,10 +104,6 @@ public:
 
 		//접속된 클라이언트 주소 정보를 저장할 구조체
 		CreateWokerThread();
-
-		
-		
-		printf("서버 시작\n");
 		return true;
 	}
 
@@ -287,6 +270,7 @@ private:
 			//clienetsession 제거 
 			if (overlappedEx->m_eOperation == IOOperation::RECV && dataTransferred == 0)
 			{
+				std::cout << "zero byte recv -> close socket" << std::endl;
 				CloseSocket(pClientInfo);
 			}
 
@@ -306,6 +290,8 @@ private:
 				}
 				else
 				{
+					std::cout << "AcceptCompletion 실패" << std::endl;
+
 					CloseSocket(pClientInfo, true);
 				}
 				break;
@@ -370,7 +356,6 @@ private:
 
 		pClientInfo->Close(bIsForce);
 		
-		// ? OnClose 부분 안하고 바로 Close 하면 안되나 ??? 
 		OnClose(clientIndex);
 	}
 

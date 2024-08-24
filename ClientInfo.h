@@ -1,6 +1,8 @@
 #pragma once
 
 #include "Define.h"
+#include <iostream>
+
 #include <stdio.h>
 #include <mutex>
 #include <queue>
@@ -10,13 +12,14 @@
 class ClientInfo
 {
 public:
-	ClientInfo()
-	{
-		ZeroMemory(&mRecvOverlappedEx, sizeof(OverlappedEX));
-	}
+	ClientInfo() = default;
+
 
 	void Init(const UINT32 index, HANDLE iocpHandle_)
 	{
+		ZeroMemory(&mRecvOverlappedEx, sizeof(OverlappedEX));
+		ZeroMemory(mRecvBuf, sizeof(mRecvBuf));  // mRecvBuf를 초기화하여 문제가 발생하지 않도록 함
+
 		mIndex = index;
 		mIOCPHandle = iocpHandle_;
 	}
@@ -25,19 +28,17 @@ public:
 
 	bool IsConnectd() { return isConnected; }
 	
-	SOCKET GetSock() { return socket; }
+	SOCKET GetSock() { return _socket; }
 
 	// UINT64 GetLatestClosedTimeSec() { return mLatestClosedTimeSec; }
 
 	char* RecvBuffer() { return mRecvBuf; }
 
 
-	bool OnConnect(HANDLE iocpHandle_, SOCKET socket_)
+	bool OnConnect(HANDLE iocpHandle_, SOCKET socket)
 	{
-		socket = socket_;
+		_socket = socket;
 		isConnected = true;
-		
-		Clear();
 
 		//I/O Completion Port객체와 소켓을 연결시킨다.
 		if (BindIOCompletionPort(iocpHandle_) == false)
@@ -45,46 +46,29 @@ public:
 			return false;
 		}
 
-		return BindRecv();
+		if (BindRecv() == false)
+		{
+			return false;
+		}
 	}
 
 	void Close(bool bIsForce = false)
 	{
-	//	struct linger stLinger = { 0, 0 };	// SO_DONTLINGER로 설정
-
-	//// bIsForce가 true이면 SO_LINGER, timeout = 0으로 설정하여 강제 종료 시킨다. 주의 : 데이터 손실이 있을수 있음 
-	//	if (true == bIsForce)
-	//	{
-	//		stLinger.l_onoff = 1;
-	//	}
-
 		//socketClose소켓의 데이터 송수신을 모두 중단 시킨다.
-		shutdown(socket, SD_BOTH);
-
-		//소켓 옵션을 설정한다.
-		//setsockopt(socket, SOL_SOCKET, SO_LINGER, (char*)&stLinger, sizeof(stLinger));
-				
+		shutdown(_socket, SD_BOTH);
 		isConnected = false;
 
-		// mLatestClosedTimeSec = std::chrono::duration_cast<std::chrono::seconds>(std::chrono::steady_clock::now().time_since_epoch()).count();
 		//소켓 연결을 종료 시킨다.
-		closesocket(socket);		
-		socket = INVALID_SOCKET;
-	}
-
-	void Clear()
-	{		
+		closesocket(_socket);		
+		_socket = INVALID_SOCKET;
 	}
 
 	bool PostAccept(SOCKET listenSock_)
 	{
-		//printf_s("PostAccept. client Index: %d\n", GetIndex());
-
-		socket = WSASocket(AF_INET, SOCK_STREAM, IPPROTO_IP,
+		_socket = WSASocket(AF_INET, SOCK_STREAM, IPPROTO_IP,
 			NULL, 0, WSA_FLAG_OVERLAPPED);
-		if (socket == INVALID_SOCKET)
+		if (_socket == INVALID_SOCKET)
 		{
-			printf_s("client Socket WSASocket Error : %d\n", GetLastError());
 			return false;
 		}
 
@@ -100,12 +84,11 @@ public:
 		/*
 		* AcceptEx는 생성한 Socket을 매개변수에 전달해줘야한다
 		*/
-		if (FALSE == AcceptEx(listenSock_, socket, mAcceptBuf, 0,
-			sizeof(SOCKADDR_IN) + 16, sizeof(SOCKADDR_IN) + 16, &bytes, (LPWSAOVERLAPPED) & (mAcceptContext)))
+		if (AcceptEx(listenSock_, _socket, mAcceptBuf, 0, sizeof(SOCKADDR_IN) + 16, sizeof(SOCKADDR_IN) + 16, &bytes, (LPWSAOVERLAPPED) & (mAcceptContext)) == false)
 		{
 			if (WSAGetLastError() != WSA_IO_PENDING)
 			{
-				printf_s("AcceptEx Error : %d\n", GetLastError());
+				std::cout << WSAGetLastError() << std::endl;
 				return false;
 			}
 		}
@@ -116,40 +99,35 @@ public:
 	bool AcceptCompletion()
 	{
 		/*
-		* CreateIOCompletionPort 부분과 socket 연결 
+		 createIOCompletionPort 부분과 socket 연결 
 		*/
-		if (OnConnect(mIOCPHandle, socket) == false)
+		if (OnConnect(mIOCPHandle, _socket) == false)
 		{
 			return false;
 		}
-
-		SOCKADDR_IN		stClientAddr;
-		int nAddrLen = sizeof(SOCKADDR_IN);
-		char clientIP[32] = { 0, };
-		inet_ntop(AF_INET, &(stClientAddr.sin_addr), clientIP, 32 - 1);
-		printf("클라이언트 접속 : IP(%s) SOCKET(%d)\n", clientIP, (int)socket);
-		
 		return true;
 	}
 
 	bool BindIOCompletionPort(HANDLE iocpHandle_)
 	{
 		//socket과 pClientInfo를 CompletionPort객체와 연결시킨다.
-		auto hIOCP = CreateIoCompletionPort((HANDLE)GetSock()
-			, iocpHandle_
-			, (ULONG_PTR)(this), 0);
+		auto hIOCP = CreateIoCompletionPort((HANDLE)GetSock(), iocpHandle_, (ULONG_PTR)(this), 0);
 
 		if (hIOCP == INVALID_HANDLE_VALUE)
 		{
-			printf("[에러] CreateIoCompletionPort()함수 실패: %d\n", GetLastError());
 			return false;
 		}
-
 		return true;
 	}
 
 	bool BindRecv()
 	{
+		if (!isConnected)  // 소켓이 연결되었는지 확인
+		{
+			std::cout << "BIND RECV ERROR: Socket is not connected." << std::endl;
+			return false;
+
+		}
 		DWORD dwFlag = 0;
 		DWORD dwRecvNumBytes = 0;
 
@@ -158,7 +136,7 @@ public:
 		mRecvOverlappedEx.m_wsaBuf.buf = mRecvBuf;
 		mRecvOverlappedEx.m_eOperation = IOOperation::RECV;
 
-		int nRet = WSARecv(socket,
+		int nRet = WSARecv(_socket,
 			&(mRecvOverlappedEx.m_wsaBuf),
 			1, // 1로하면 가장 큰 값인가?.. 한번에 받을 수 있는 데이터 최대량 부분
 			// TCP 순차성때문에 가장 큰것으로 하기도함 
@@ -170,10 +148,10 @@ public:
 		//socket_error이면 client socket이 끊어진걸로 처리한다.
 		if (nRet == SOCKET_ERROR && (WSAGetLastError() != ERROR_IO_PENDING))
 		{
-			printf("[에러] WSARecv()함수 실패 : %d\n", WSAGetLastError());
+			//10057 Error 
+			std::cout << "BIND RECV ERROR : " << WSAGetLastError() << std::endl;
 			return false;
 		}
-
 		return true;
 	}
 
@@ -226,7 +204,7 @@ private:
 		auto sendOverlappedEx = mSendDataqueue.front();
 
 		DWORD dwRecvNumBytes = 0;
-		int nRet = WSASend(socket,
+		int nRet = WSASend(_socket,
 			&(sendOverlappedEx->m_wsaBuf),
 			1,
 			&dwRecvNumBytes,
@@ -237,7 +215,7 @@ private:
 		//socket_error이면 client socket이 끊어진걸로 처리한다.
 		if (nRet == SOCKET_ERROR && (WSAGetLastError() != ERROR_IO_PENDING))
 		{
-			// printf("[에러] WSASend()함수 실패 : %d\n", WSAGetLastError());
+			printf("[에러] WSASend()함수 실패 : %d\n", WSAGetLastError());
 			return false;
 		}
 
@@ -246,21 +224,15 @@ private:
 
 	bool SetSocketOption()
 	{
-		/*if (SOCKET_ERROR == setsockopt(mSock, SOL_SOCKET, SO_UPDATE_ACCEPT_CONTEXT, (char*)GIocpManager->GetListenSocket(), sizeof(SOCKET)))
-		{
-			printf_s("[DEBUG] SO_UPDATE_ACCEPT_CONTEXT error: %d\n", GetLastError());
-			return false;
-		}*/
-
 		int opt = 1;
-		if (SOCKET_ERROR == setsockopt(socket, IPPROTO_TCP, TCP_NODELAY, (const char*)&opt, sizeof(int)))
+		if (SOCKET_ERROR == setsockopt(_socket, IPPROTO_TCP, TCP_NODELAY, (const char*)&opt, sizeof(int)))
 		{
 			printf_s("[DEBUG] TCP_NODELAY error: %d\n", GetLastError());
 			return false;
 		}
 
 		opt = 0;
-		if (SOCKET_ERROR == setsockopt(socket, SOL_SOCKET, SO_RCVBUF, (const char*)&opt, sizeof(int)))
+		if (SOCKET_ERROR == setsockopt(_socket, SOL_SOCKET, SO_RCVBUF, (const char*)&opt, sizeof(int)))
 		{
 			printf_s("[DEBUG] SO_RCVBUF change error: %d\n", GetLastError());
 			return false;
@@ -277,7 +249,9 @@ private:
 
 	bool isConnected = 0;
 
-	SOCKET			socket = INVALID_SOCKET;			//Cliet와 연결되는 소켓
+	SOCKET			_socket = INVALID_SOCKET;			//Cliet와 연결되는 소켓
+
+	//overlappedEx가 accepContext도 존재하고, recvOverlappedEx도 존재 정리할 필요하 존재한다 
 
 	OverlappedEX	mAcceptContext;
 	char mAcceptBuf[64];
