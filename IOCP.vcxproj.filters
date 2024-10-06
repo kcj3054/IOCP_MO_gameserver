@@ -8,6 +8,9 @@
     </ClCompile>
     <ClCompile Include="PaketManager.cpp" />
     <ClCompile Include="UserManager.cpp" />
+    <ClCompile Include="DBManager.cpp">
+      <Filter>DB</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="IOCPServer.h">
@@ -25,6 +28,9 @@
     <ClInclude Include="PacketSession.h" />
     <ClInclude Include="PaketManager.h" />
     <ClInclude Include="UserManager.h" />
+    <ClInclude Include="DBManager.h">
+      <Filter>DB</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="ServerNetwork">
@@ -32,6 +38,9 @@
     </Filter>
     <Filter Include="Packet">
       <UniqueIdentifier>{8e631414-b527-4522-94c2-af06f9dbc68a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DB">
+      <UniqueIdentifier>{0b0ef0b3-1e95-4275-8046-accd46589697}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
