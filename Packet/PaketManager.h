@@ -1,14 +1,14 @@
 #pragma once
 
 #include <Windows.h>
+#include <functional>
+#include <concurrent_queue.h>
+#include <mutex>
+#include <memory>
 
 #include "Packet.h"
 
-#include <functional>
-#include <thread>
-#include <mutex>
-
-#include <concurrent_queue.h>
+class RedisManager;
 
 class PaketManager
 {
@@ -44,6 +44,11 @@ private:
 	bool isRunProcessThread = false;
 	std::thread processThread;
 
+	//=====================Redis==========================================
+	// std::unique_ptr<RedisManager> _redisManager;
+
+
+	//=====================RedisEnd=======================================
 	using PROCESS_RECV_PACKET_FUNCTION = std::function<void(PaketManager&, UINT32, UINT16, char*)>; 
 
 	std::unordered_map<int, PROCESS_RECV_PACKET_FUNCTION> recvFunctionDictionary;
@@ -55,6 +60,9 @@ private:
 	*/
 
 	concurrency::concurrent_queue<UINT32> comingPacketUserIndex;
+
+
+	
 };
 
 

@@ -21,6 +21,7 @@
     <ClCompile Include="RedisManager.cpp">
       <Filter>Redis</Filter>
     </ClCompile>
+    <ClCompile Include="pch.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameServer.h" />
@@ -62,6 +63,7 @@
     <ClInclude Include="RedisManager.h">
       <Filter>Redis</Filter>
     </ClInclude>
+    <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="ServerNetwork">

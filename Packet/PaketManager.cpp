@@ -1,5 +1,7 @@
 #include "PaketManager.h"
 
+// #include "../RedisManager.h"
+
 PaketManager::~PaketManager()
 {
 	isRunProcessThread = false;
@@ -22,10 +24,17 @@ void PaketManager::Init(const int maxClinet)
 
 	isRunProcessThread = true;
 	processThread = std::thread(&PaketManager::ProcessPacket, this);
+
+
+	//===================Redis=====================================
+	// _redisManager = std::make_unique<RedisManager>();
 }
 
 bool PaketManager::Run()
 {
+	//RedisManager 시작 , todo : 하드 코딩 부분 제거하기 
+	// _redisManager->Init("127.0.0.1", 6379, 10);
+
 	return false;
 }
 
