@@ -3,6 +3,13 @@
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 
+//- 로그인 요청
+// const int MAX_USER_ID_LEN = 32;
+constexpr int MAX_USER_ID_LEN = 32;
+// const int MAX_USER_PW_LEN = 32;
+constexpr int MAX_USER_PW_LEN = 32;
+
+
 struct PacketData
 {
 	UINT32 SessionIndex = 0;

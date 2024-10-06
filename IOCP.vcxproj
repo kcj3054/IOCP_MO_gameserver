@@ -65,13 +65,13 @@
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>C:\iocp_tutorial\edu_cpp_IOCP\Tutorial\ThirdParty\hiredis;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>/thirdparty/hiredis;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>C:\iocp_tutorial\edu_cpp_IOCP\Tutorial\ThirdParty\Debug\hiredisd.lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>C:\iocp_tutorial\edu_cpp_IOCP\Tutorial\ThirdParty\Debug\hiredisd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>Thirdparty/hiredis/VS-IDE/Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release Win64|x64'">
@@ -101,6 +101,8 @@
     <ClInclude Include="Packet\PacketSession.h" />
     <ClInclude Include="Packet\PacketType.h" />
     <ClInclude Include="Packet\PaketManager.h" />
+    <ClInclude Include="RedisDefine.h" />
+    <ClInclude Include="RedisManager.h" />
     <ClInclude Include="ServerNetwork\ClientInfo.h" />
     <ClInclude Include="ServerNetwork\Define.h" />
     <ClInclude Include="ServerNetwork\IOCPServer.h" />
@@ -113,6 +115,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Packet\PacketSession.cpp" />
     <ClCompile Include="Packet\PaketManager.cpp" />
+    <ClCompile Include="RedisManager.cpp" />
     <ClCompile Include="User\UserManager.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -18,6 +18,9 @@
     <ClCompile Include="DB\DBManager.cpp">
       <Filter>DB</Filter>
     </ClCompile>
+    <ClCompile Include="RedisManager.cpp">
+      <Filter>Redis</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameServer.h" />
@@ -53,6 +56,12 @@
     <ClInclude Include="DB\DBManager.h">
       <Filter>DB</Filter>
     </ClInclude>
+    <ClInclude Include="RedisDefine.h">
+      <Filter>Redis</Filter>
+    </ClInclude>
+    <ClInclude Include="RedisManager.h">
+      <Filter>Redis</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="ServerNetwork">
@@ -66,6 +75,9 @@
     </Filter>
     <Filter Include="User">
       <UniqueIdentifier>{e970d6c4-4171-45b6-bb82-fb018aea6400}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Redis">
+      <UniqueIdentifier>{89a273f9-c01f-4ca9-a4ed-c96bca25b911}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
