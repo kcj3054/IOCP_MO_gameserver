@@ -20,7 +20,6 @@ public:
 	bool			BindParam(int paramIndex, float* value, SQLLEN* index);
 	bool			BindParam(int paramIndex, double* value, SQLLEN* index);
 	bool			BindParam(int paramIndex, short* value, SQLLEN* index);
-	bool			BindParam(int paramIndex, short* value, SQLLEN* index);
 	bool			BindParam(int paramIndex, int* value, SQLLEN* index);
 	bool			BindParam(int paramIndex, long* value, SQLLEN* index);
 	bool			BindParam(int paramIndex, TIMESTAMP_STRUCT* value, SQLLEN* index);
@@ -31,12 +30,10 @@ public:
 	bool			BindCol(int columnIndex, float* value, SQLLEN* index);
 	bool			BindCol(int columnIndex, double* value, SQLLEN* index);
 	bool			BindCol(int columnIndex, short* value, SQLLEN* index);
-	bool			BindCol(int columnIndex, int16* value, SQLLEN* index);
 	bool			BindCol(int columnIndex, int* value, SQLLEN* index);
-	bool			BindCol(int columnIndex, long* value, SQLLEN* index);
 	bool			BindCol(int columnIndex, TIMESTAMP_STRUCT* value, SQLLEN* index);
-	bool			BindCol(int columnIndex, WCHAR* str, int32 size, SQLLEN* index);
-	bool			BindCol(int columnIndex, BYTE* bin, int32 size, SQLLEN* index);
+	bool			BindCol(int columnIndex, WCHAR* str, int size, SQLLEN* index);
+	bool			BindCol(int columnIndex, BYTE* bin, int size, SQLLEN* index);
 
 public:
 

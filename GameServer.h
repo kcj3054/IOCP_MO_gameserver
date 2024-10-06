@@ -1,12 +1,9 @@
 #pragma once
-
-
-
-#include "IOCPServer.h"
-#include "Packet.h"
-#include "packetType.h"
-#include "PacketSession.h"
-#include "PaketManager.h"
+#include "../IOCPServer/ServerNetwork/IOCPServer.h"
+#include "../IOCPServer/Packet/Packet.h"
+#include "../IOCPServer/Packet/packetType.h"
+#include "../IOCPServer/Packet/PacketSession.h"
+#include "../IOCPServer/Packet/PaketManager.h"
 
 #include <concurrent_queue.h>
 

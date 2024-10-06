@@ -92,24 +92,28 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="ClientInfo.h" />
     <ClInclude Include="CoreMacro.h" />
-    <ClInclude Include="DBManager.h" />
-    <ClInclude Include="Define.h" />
+    <ClInclude Include="DB\DBConnection.h" />
+    <ClInclude Include="DB\DBConnectionPool.h" />
+    <ClInclude Include="DB\DBManager.h" />
     <ClInclude Include="GameServer.h" />
-    <ClInclude Include="IOCPServer.h" />
-    <ClInclude Include="Packet.h" />
-    <ClInclude Include="PacketSession.h" />
-    <ClInclude Include="PaketManager.h" />
-    <ClInclude Include="UserManager.h" />
+    <ClInclude Include="Packet\Packet.h" />
+    <ClInclude Include="Packet\PacketSession.h" />
+    <ClInclude Include="Packet\PacketType.h" />
+    <ClInclude Include="Packet\PaketManager.h" />
+    <ClInclude Include="ServerNetwork\ClientInfo.h" />
+    <ClInclude Include="ServerNetwork\Define.h" />
+    <ClInclude Include="ServerNetwork\IOCPServer.h" />
+    <ClInclude Include="User\UserManager.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="DBManager.cpp" />
+    <ClCompile Include="DB\DBConnection.cpp" />
+    <ClCompile Include="DB\DBConnectionPool.cpp" />
+    <ClCompile Include="DB\DBManager.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="PacketSession.cpp" />
-    <ClCompile Include="PacketType.h" />
-    <ClCompile Include="PaketManager.cpp" />
-    <ClCompile Include="UserManager.cpp" />
+    <ClCompile Include="Packet\PacketSession.cpp" />
+    <ClCompile Include="Packet\PaketManager.cpp" />
+    <ClCompile Include="User\UserManager.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

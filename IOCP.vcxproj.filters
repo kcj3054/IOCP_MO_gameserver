@@ -2,33 +2,55 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="PacketSession.cpp" />
-    <ClCompile Include="PacketType.h">
+    <ClCompile Include="User\UserManager.cpp" />
+    <ClCompile Include="Packet\PacketSession.cpp">
       <Filter>Packet</Filter>
     </ClCompile>
-    <ClCompile Include="PaketManager.cpp" />
-    <ClCompile Include="UserManager.cpp" />
-    <ClCompile Include="DBManager.cpp">
+    <ClCompile Include="Packet\PaketManager.cpp">
+      <Filter>Packet</Filter>
+    </ClCompile>
+    <ClCompile Include="DB\DBConnection.cpp">
+      <Filter>DB</Filter>
+    </ClCompile>
+    <ClCompile Include="DB\DBConnectionPool.cpp">
+      <Filter>DB</Filter>
+    </ClCompile>
+    <ClCompile Include="DB\DBManager.cpp">
       <Filter>DB</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="IOCPServer.h">
-      <Filter>ServerNetwork</Filter>
-    </ClInclude>
-    <ClInclude Include="Define.h">
-      <Filter>ServerNetwork</Filter>
-    </ClInclude>
     <ClInclude Include="GameServer.h" />
-    <ClInclude Include="Packet.h" />
-    <ClInclude Include="ClientInfo.h">
+    <ClInclude Include="CoreMacro.h" />
+    <ClInclude Include="User\UserManager.h" />
+    <ClInclude Include="ServerNetwork\ClientInfo.h">
       <Filter>ServerNetwork</Filter>
     </ClInclude>
-    <ClInclude Include="CoreMacro.h" />
-    <ClInclude Include="PacketSession.h" />
-    <ClInclude Include="PaketManager.h" />
-    <ClInclude Include="UserManager.h" />
-    <ClInclude Include="DBManager.h">
+    <ClInclude Include="ServerNetwork\Define.h">
+      <Filter>ServerNetwork</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerNetwork\IOCPServer.h">
+      <Filter>ServerNetwork</Filter>
+    </ClInclude>
+    <ClInclude Include="Packet\Packet.h">
+      <Filter>Packet</Filter>
+    </ClInclude>
+    <ClInclude Include="Packet\PacketSession.h">
+      <Filter>Packet</Filter>
+    </ClInclude>
+    <ClInclude Include="Packet\PacketType.h">
+      <Filter>Packet</Filter>
+    </ClInclude>
+    <ClInclude Include="Packet\PaketManager.h">
+      <Filter>Packet</Filter>
+    </ClInclude>
+    <ClInclude Include="DB\DBConnection.h">
+      <Filter>DB</Filter>
+    </ClInclude>
+    <ClInclude Include="DB\DBConnectionPool.h">
+      <Filter>DB</Filter>
+    </ClInclude>
+    <ClInclude Include="DB\DBManager.h">
       <Filter>DB</Filter>
     </ClInclude>
   </ItemGroup>
@@ -41,6 +63,9 @@
     </Filter>
     <Filter Include="DB">
       <UniqueIdentifier>{0b0ef0b3-1e95-4275-8046-accd46589697}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="User">
+      <UniqueIdentifier>{e970d6c4-4171-45b6-bb82-fb018aea6400}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
