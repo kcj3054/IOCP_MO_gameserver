@@ -1,12 +1,7 @@
 #pragma once
 
+#include "../pch.h"
 #include "Define.h"
-#include <iostream>
-
-#include <stdio.h>
-#include <mutex>
-#include <queue>
-
 
 //클라이언트 정보를 담기위한 구조체
 class ClientInfo

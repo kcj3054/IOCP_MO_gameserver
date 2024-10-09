@@ -1,3 +1,4 @@
+#include "../pch.h"
 #include "PacketSession.h"
 
 void PacketSession::RegisteHandler(int packetID, PacketHandler handler)

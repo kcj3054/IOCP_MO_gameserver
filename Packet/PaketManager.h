@@ -1,11 +1,5 @@
 #pragma once
 
-#include <Windows.h>
-#include <functional>
-#include <concurrent_queue.h>
-#include <mutex>
-#include <memory>
-
 #include "Packet.h"
 
 class RedisManager;

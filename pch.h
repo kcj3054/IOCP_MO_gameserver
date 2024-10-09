@@ -4,6 +4,12 @@
 #include <thread>
 #include <mutex>
 
+#include <winsock2.h>
+#include <Ws2tcpip.h>
+
+#include <mswsock.h>
+#include <Windows.h>
+
 
 #include <concurrent_queue.h>
 
@@ -16,4 +22,7 @@
 #include <unordered_map>
 
 
-#include <Windows.h>
+#include <concurrent_queue.h>
+#include <memory>
+
+#include <stdio.h>

@@ -22,6 +22,9 @@
       <Filter>Redis</Filter>
     </ClCompile>
     <ClCompile Include="pch.cpp" />
+    <ClCompile Include="Lock.cpp">
+      <Filter>Thread</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameServer.h" />
@@ -64,6 +67,9 @@
       <Filter>Redis</Filter>
     </ClInclude>
     <ClInclude Include="pch.h" />
+    <ClInclude Include="Lock.h">
+      <Filter>Thread</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="ServerNetwork">
@@ -80,6 +86,9 @@
     </Filter>
     <Filter Include="Redis">
       <UniqueIdentifier>{89a273f9-c01f-4ca9-a4ed-c96bca25b911}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Thread">
+      <UniqueIdentifier>{97ef9e1b-d889-48c7-997c-564c5c60eff9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
