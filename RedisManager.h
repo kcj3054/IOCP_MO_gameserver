@@ -3,6 +3,7 @@
 #include "pch.h"
 
 #include "thirdparty/CRedisConn.h"
+
 #include "RedisDefine.h"
 
 class RedisManager

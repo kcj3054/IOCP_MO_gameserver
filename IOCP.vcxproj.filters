@@ -21,7 +21,6 @@
     <ClCompile Include="RedisManager.cpp">
       <Filter>Redis</Filter>
     </ClCompile>
-    <ClCompile Include="pch.cpp" />
     <ClCompile Include="Lock.cpp">
       <Filter>Thread</Filter>
     </ClCompile>

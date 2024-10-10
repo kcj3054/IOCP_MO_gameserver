@@ -59,7 +59,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug Win64|x64'">
     <ClCompile>
-      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
@@ -119,9 +119,6 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Packet\PacketSession.cpp" />
     <ClCompile Include="Packet\PaketManager.cpp" />
-    <ClCompile Include="pch.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug Win64|x64'">Create</PrecompiledHeader>
-    </ClCompile>
     <ClCompile Include="RedisManager.cpp" />
     <ClCompile Include="User\UserManager.cpp" />
   </ItemGroup>

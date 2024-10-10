@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../pch.h"
 #include "Define.h"
+#include <queue>
 
 //클라이언트 정보를 담기위한 구조체
 class ClientInfo
@@ -181,7 +181,7 @@ public:
 			return false;
 		}
 
-		//WSARecv Error 발생 
+		//WSARecv Error 발생 WW
 		int nRet = WSARecv(_socket,
 			&(mRecvOverlappedEx.m_wsaBuf),
 			1, // 1로하면 가장 큰 값인가?.. 한번에 받을 수 있는 데이터 최대량 부분
