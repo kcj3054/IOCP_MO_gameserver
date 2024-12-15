@@ -94,10 +94,16 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="CoreMacro.h" />
+    <ClInclude Include="Creature.h" />
+    <ClInclude Include="DataSheetManager.h" />
     <ClInclude Include="DB\DBConnection.h" />
     <ClInclude Include="DB\DBConnectionPool.h" />
     <ClInclude Include="DB\DBManager.h" />
+    <ClInclude Include="ExecuteFunctionWithThreads.h" />
+    <ClInclude Include="GameObjectFactory.h" />
     <ClInclude Include="GameServer.h" />
+    <ClInclude Include="Job.h" />
+    <ClInclude Include="JobSerialize.h" />
     <ClInclude Include="Lock.h" />
     <ClInclude Include="Packet\Packet.h" />
     <ClInclude Include="Packet\PacketSession.h" />
@@ -109,17 +115,28 @@
     <ClInclude Include="ServerNetwork\ClientInfo.h" />
     <ClInclude Include="ServerNetwork\Define.h" />
     <ClInclude Include="ServerNetwork\IOCPServer.h" />
+    <ClInclude Include="SystemMessageManager.h" />
+    <ClInclude Include="User.h" />
+    <ClInclude Include="UserDBData.h" />
     <ClInclude Include="User\UserManager.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Creature.cpp" />
+    <ClCompile Include="DataSheetManager.cpp" />
     <ClCompile Include="DB\DBConnection.cpp" />
     <ClCompile Include="DB\DBConnectionPool.cpp" />
     <ClCompile Include="DB\DBManager.cpp" />
+    <ClCompile Include="GameObjectFactory.cpp" />
+    <ClCompile Include="Job.cpp" />
+    <ClCompile Include="JobSerialize.cpp" />
     <ClCompile Include="Lock.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Packet\PacketSession.cpp" />
     <ClCompile Include="Packet\PaketManager.cpp" />
     <ClCompile Include="RedisManager.cpp" />
+    <ClCompile Include="SystemMessageManager.cpp" />
+    <ClCompile Include="User.cpp" />
+    <ClCompile Include="UserDBData.cpp" />
     <ClCompile Include="User\UserManager.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

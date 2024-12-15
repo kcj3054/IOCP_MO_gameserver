@@ -54,9 +54,6 @@ private:
 	*/
 
 	concurrency::concurrent_queue<UINT32> comingPacketUserIndex;
-
-
-	
 };
 
 

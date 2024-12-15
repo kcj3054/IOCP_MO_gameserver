@@ -2,7 +2,6 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="User\UserManager.cpp" />
     <ClCompile Include="Packet\PacketSession.cpp">
       <Filter>Packet</Filter>
     </ClCompile>
@@ -24,11 +23,29 @@
     <ClCompile Include="Lock.cpp">
       <Filter>Thread</Filter>
     </ClCompile>
+    <ClCompile Include="DataSheetManager.cpp">
+      <Filter>DataSheet</Filter>
+    </ClCompile>
+    <ClCompile Include="Job.cpp" />
+    <ClCompile Include="JobSerialize.cpp" />
+    <ClCompile Include="SystemMessageManager.cpp">
+      <Filter>SystemMessage</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjectFactory.cpp">
+      <Filter>GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="User\UserManager.cpp">
+      <Filter>GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="User.cpp">
+      <Filter>User</Filter>
+    </ClCompile>
+    <ClCompile Include="Creature.cpp" />
+    <ClCompile Include="UserDBData.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameServer.h" />
     <ClInclude Include="CoreMacro.h" />
-    <ClInclude Include="User\UserManager.h" />
     <ClInclude Include="ServerNetwork\ClientInfo.h">
       <Filter>ServerNetwork</Filter>
     </ClInclude>
@@ -69,6 +86,28 @@
     <ClInclude Include="Lock.h">
       <Filter>Thread</Filter>
     </ClInclude>
+    <ClInclude Include="DataSheetManager.h">
+      <Filter>DataSheet</Filter>
+    </ClInclude>
+    <ClInclude Include="ExecuteFunctionWithThreads.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="Job.h" />
+    <ClInclude Include="JobSerialize.h" />
+    <ClInclude Include="SystemMessageManager.h">
+      <Filter>SystemMessage</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjectFactory.h">
+      <Filter>GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="User\UserManager.h">
+      <Filter>GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="User.h">
+      <Filter>User</Filter>
+    </ClInclude>
+    <ClInclude Include="Creature.h" />
+    <ClInclude Include="UserDBData.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="ServerNetwork">
@@ -88,6 +127,27 @@
     </Filter>
     <Filter Include="Thread">
       <UniqueIdentifier>{97ef9e1b-d889-48c7-997c-564c5c60eff9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DataSheet">
+      <UniqueIdentifier>{3ccbe9f0-2214-4cec-9105-bb29f79ea99f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Util">
+      <UniqueIdentifier>{e416089b-a406-4f45-b106-721c3109c560}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SystemMessage">
+      <UniqueIdentifier>{3bb04795-ee15-4c6e-9c08-712f4c6b4cc6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject">
+      <UniqueIdentifier>{8eef2c52-a2e5-4ae2-977f-0f98a9dc8985}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Map">
+      <UniqueIdentifier>{3b5d29e2-1d36-4252-b934-cee29ad59935}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObjectComponent">
+      <UniqueIdentifier>{673f14cd-96bc-4448-9d70-44950877083e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DB\UserDB">
+      <UniqueIdentifier>{d5a05d48-900c-4cce-8487-1a4015a47781}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
